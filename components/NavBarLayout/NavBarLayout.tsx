@@ -23,6 +23,12 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 
+
+
+
+import logo from "images/maeei bg.png"
+import Image from "next/image";
+
 export default function NavBarLayout({ children }: any) {
   const { isOpen, onToggle } = useDisclosure();
 
@@ -30,22 +36,24 @@ export default function NavBarLayout({ children }: any) {
     <>
       <Box>
         <Flex
-          bg={useColorModeValue("white", "gray.800")}
+          bg={useColorModeValue("#213b4e", "#213b4e")}
           color={useColorModeValue("gray.600", "white")}
           minH={"60px"}
           py={{ base: 2 }}
           px={{ base: 4 }}
-          borderBottom={1}
+          // borderBottom={1}
           borderStyle={"solid"}
-          borderColor={useColorModeValue("gray.200", "gray.900")}
+          // borderColor={useColorModeValue("gray.200", "gray.900")}
           align={"center"}
         >
           <Flex
             flex={{ base: 1, md: "auto" }}
             ml={{ base: -2 }}
             display={{ base: "flex", md: "none" }}
+            justifyContent={"space-between"}
           >
             <IconButton
+            color="white"
               onClick={onToggle}
               icon={
                 isOpen ? (
@@ -59,19 +67,17 @@ export default function NavBarLayout({ children }: any) {
             />
           </Flex>
 
-          <Flex justify={{ base: "center", md: "start" }}>
-            <Text
-              textAlign={useBreakpointValue({ base: "center", md: "left" })}
-              fontFamily={"heading"}
-              color={useColorModeValue("gray.800", "white")}
-            >
-              Maeei
-            </Text>
+          <Flex me={{base:10,md:0}} width="full" alignItems="center" justify={{ base: "center", md: "space-between" }}>
+          
+            <Image  width={120} src={logo} alt="logo"/>
 
-            <Flex display={{ base: "none", md: "flex" }} ml={10}>
+            <Flex display={{ base: "none", md: "flex" }} >
               <DesktopNav />
             </Flex>
+            <Flex display={{  base: "flex",md: "none" }} ></Flex>
           </Flex>
+
+          
         </Flex>
 
         <Collapse in={isOpen} animateOpacity>
@@ -84,8 +90,8 @@ export default function NavBarLayout({ children }: any) {
 }
 
 const DesktopNav = () => {
-  const linkColor = useColorModeValue("gray.600", "gray.200");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
+  const linkColor = "white"
+  const linkHoverColor = "gray.500"
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
@@ -193,7 +199,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
       <Box
         py={2}
         as="a"
-        href={href ?? "#"}
+        href={href ?? "/"}
         justifyContent="space-between"
         alignItems="center"
         _hover={{
@@ -246,42 +252,42 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
+  // {
+  //   label: "Inspiration",
+  //   children: [
+  //     {
+  //       label: "Explore Design Work",
+  //       subLabel: "Trending Design to inspire you",
+  //       href: "#",
+  //     },
+  //     {
+  //       label: "New & Noteworthy",
+  //       subLabel: "Up-and-coming Designers",
+  //       href: "#",
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: "Find Work",
+  //   children: [
+  //     {
+  //       label: "Job Board",
+  //       subLabel: "Find your dream design job",
+  //       href: "#",
+  //     },
+  //     {
+  //       label: "Freelance Projects",
+  //       subLabel: "An exclusive list for contract work",
+  //       href: "#",
+  //     },
+  //   ],
+  // },
   {
-    label: "Inspiration",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "#",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "#",
-      },
-    ],
+    label: "ورود اطلاعات",
+    href: "/doctor-register",
   },
   {
-    label: "Find Work",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "#",
-      },
-    ],
-  },
-  {
-    label: "Learn Design",
-    href: "#",
-  },
-  {
-    label: "Hire Designers",
+    label: "لیست اطلاعات دریافتی",
     href: "#",
   },
 ];
