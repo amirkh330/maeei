@@ -1,13 +1,17 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+"use client";
 import {
   Box,
   Button,
   Flex,
+  FormControl,
   Input,
   Select,
   Text,
   Textarea,
 } from "@chakra-ui/react";
 import React from "react";
+import { useForm } from "react-hook-form";
 
 export default function page() {
   const borderColor = "gray.500";
@@ -29,115 +33,183 @@ export default function page() {
     { id: 14, title: "غدد درون ریز" },
     { id: 15, title: "ژنتیک" },
   ];
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (e: any) => {
+    console.log(e);
+  };
+
   return (
-    <Flex height={{base:"90vh",md:"89dvh"}} bg={"gray.100"} p={{base:0,md:5}} direction={"column"} alignItems="center">
+    <form style={{width:"100%"}} onSubmit={handleSubmit(onSubmit)}>
       <Flex
-        mt={{md:0,base:5}}
-        width={{base:"90%",md:"60%"}}
-        border={"1px solid gray.100"}
-        p={3}
+        height={{ base: "90vh", md: "89dvh" }}
+        bg={"gray.100"}
+        p={{ base: 0, md: 5 }}
         direction={"column"}
+        alignItems="center"
       >
-        <Flex justify={"center"} mb="8">
-          <Text fontSize={20} fontWeight={500}>
-            ورود اطلاعات پزشک
-          </Text>
-        </Flex>
-
         <Flex
-          mb="2"
-          align={"center"}
-          justifyContent={{ md: "space-between" }}
-          width={"full"}
-          flexWrap={{md:"nowrap",base:"wrap"}}
+          p={3}
+          mt={{ md: 2, base: 5 }}
+          borderRadius={"4%"}
+          border={"1px solid"}
+          borderColor={"gray.300"}
+          width={{ base: "90%", md: "60%" }}
+          direction={"column"}
         >
-          <Box m={2} width={"100%"}>
-            <Text fontSize={12} fontWeight={"light"} color={titleColor} mb="2">
-              نام دکتر
+          <Flex justify={"center"} mb="8">
+            <Text fontSize={20} fontWeight={500}>
+              ورود اطلاعات پزشک
             </Text>
-            <Input
-            _placeholder={{color:"gray.600"}}
-              textColor={"black"}
-              borderColor={borderColor}
-              placeholder="وارد کنید"
-            />
-          </Box>
-          <Box m={2} width={"100%"}>
-            <Text fontSize={12} fontWeight={"light"} color={titleColor} mb="2">
-              شماره نظام پزشکی
-            </Text>
-            <Input
-            _placeholder={{color:"gray.600"}}
-              textColor={"black"}
-              borderColor={borderColor}
-              placeholder="وارد کنید"
-            />
-          </Box>
-        </Flex>
+          </Flex>
 
-        <Flex
-          mb="2"
-          align={"center"}
-          width={"full"}
-          justifyContent={{ md: "space-between" }}
-          flexWrap={{md:"nowrap",base:"wrap"}}
-        >
-          <Box m={2} width={"100%"}>
-            <Text fontSize={12} fontWeight={"light"} color={titleColor} mb="2">
-              شماره موبایل
-            </Text>
-            <Input
-            _placeholder={{color:"gray.600"}}
-              textColor={"black"}
-              borderColor={borderColor}
-              placeholder="وارد کنید"
-            />
-          </Box>
-          <Box m={2} width={"100%"}>
-            <Text fontSize={12} fontWeight={"light"} color={titleColor} mb="2">
-              شماره مطب
-            </Text>
-            <Input
-            _placeholder={{color:"gray.600"}}
-              textColor={"black"}
-              borderColor={borderColor}
-              placeholder="وارد کنید"
-            />
-          </Box>
-        </Flex>
+          <Flex
+            mb="2"
+            align={"center"}
+            justifyContent={{ md: "space-between" }}
+            width={"full"}
+            flexWrap={{ md: "nowrap", base: "wrap" }}
+          >
+            <Box m={2} width={"100%"}>
+              <Text
+                fontSize={12}
+                fontWeight={"light"}
+                color={titleColor}
+                mb="2"
+              >
+                نام دکتر
+              </Text>
+              <FormControl>
+                <Input
+                  {...register("name")}
+                  _placeholder={{ color: "gray.600" }}
+                  textColor={"black"}
+                  borderColor={borderColor}
+                  placeholder="وارد کنید"
+                />
+              </FormControl>
+            </Box>
+            <Box m={2} width={"100%"}>
+              <Text
+                fontSize={12}
+                fontWeight={"light"}
+                color={titleColor}
+                mb="2"
+              >
+                شماره نظام پزشکی
+              </Text>
+              <FormControl>
+                <Input
+                  {...register("serialize_number")}
+                  _placeholder={{ color: "gray.600" }}
+                  textColor={"black"}
+                  borderColor={borderColor}
+                  placeholder="وارد کنید"
+                />
+              </FormControl>
+            </Box>
+          </Flex>
 
-        <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
-          <Box m={2} width={"100%"}>
-            <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
-              تخصص
-            </Text>
-            <Select 
-            _placeholder={{color:"gray.600"}}
-            dir="rtl" borderColor={borderColor} placeholder="انتخاب کنید">
-              {expertsList.map((ex) => (
-                <option key={ex.id} value={ex.id}>{ex.title}</option>
-              ))}
-            </Select>
-          </Box>
-        </Flex>
+          <Flex
+            mb="2"
+            align={"center"}
+            width={"full"}
+            justifyContent={{ md: "space-between" }}
+            flexWrap={{ md: "nowrap", base: "wrap" }}
+          >
+            <Box m={2} width={"100%"}>
+              <Text
+                fontSize={12}
+                fontWeight={"light"}
+                color={titleColor}
+                mb="2"
+              >
+                شماره موبایل
+              </Text>
+              <FormControl>
+                <Input
+                  {...register("mobile")}
+                  _placeholder={{ color: "gray.600" }}
+                  textColor={"black"}
+                  borderColor={borderColor}
+                  placeholder="وارد کنید"
+                />
+              </FormControl>
+            </Box>
+            <Box m={2} width={"100%"}>
+              <Text
+                fontSize={12}
+                fontWeight={"light"}
+                color={titleColor}
+                mb="2"
+              >
+                شماره مطب
+              </Text>
+              <FormControl>
+                <Input
+                  {...register("office_number")}
+                  _placeholder={{ color: "gray.600" }}
+                  textColor={"black"}
+                  borderColor={borderColor}
+                  placeholder="وارد کنید"
+                />
+              </FormControl>
+            </Box>
+          </Flex>
 
-        <Flex align={"center"} justifyContent={{ md: "center" }}>
-          <Box m={2} width={"100%"}>
-            <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
-              آدرس
-            </Text>
-            <Textarea fontSize="12px" _placeholder={{color:"gray.600"}}  borderColor={borderColor} placeholder=" آدرس را وارد کنید" />
-          </Box>
-        </Flex>
+          <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
+            <Box m={2} width={"100%"}>
+              <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
+                تخصص
+              </Text>
+              <FormControl>
+                <Select
+                  {...register("expertise")}
+                  _placeholder={{ color: "gray.600" }}
+                  dir="rtl"
+                  borderColor={borderColor}
+                  placeholder="انتخاب کنید"
+                >
+                  {expertsList.map((ex) => (
+                    <option key={ex.id} value={ex.id}>
+                      {ex.title}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Flex>
 
-        <Flex justify={"flex-end"} mx="2" mt={{base:5,md:10}}>
-          <Button size="sm" colorScheme="blue">
-            <Text fontSize={12} fontWeight={300}>
-              ذخیره اطلاعات
-            </Text>
-          </Button>
+          <Flex align={"center"} justifyContent={{ md: "center" }}>
+            <Box m={2} width={"100%"}>
+              <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
+                آدرس
+              </Text>
+              <FormControl>
+                <Textarea
+                  {...register("address")}
+                  fontSize="12px"
+                  _placeholder={{ color: "gray.600" }}
+                  borderColor={borderColor}
+                  placeholder=" آدرس را وارد کنید"
+                />
+              </FormControl>
+            </Box>
+          </Flex>
+
+          <Flex justify={"flex-end"} mx="2" mt={{ base: 5, md: 10 }}>
+            <Button type="submit" size="sm" colorScheme="blue">
+              <Text fontSize={12} fontWeight={300}>
+                ذخیره اطلاعات
+              </Text>
+            </Button>
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </form>
   );
 }
