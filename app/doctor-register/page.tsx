@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
+import { sql } from "@vercel/postgres";
 import {
   Box,
   Button,
@@ -11,11 +12,14 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { PrismaClient } from "@prisma/client/extension";
+import { DataContext } from "../layout";
 // import { handleSaveForm } from "../api/handler";
 
 export default function page() {
+  // const prisma = new PrismaClient();
   const borderColor = "gray.500";
   const titleColor = "gray.700";
   const expertsList = [
@@ -33,7 +37,7 @@ export default function page() {
     { id: 12, title: "پیوند کلیه" },
     { id: 13, title: "غدد اطفال" },
     { id: 14, title: "غدد درون ریز" },
-    { id: 15, title: "fuck me hard" },
+    { id: 15, title: "ژنتیک" },
   ];
   const {
     control,
@@ -42,13 +46,23 @@ export default function page() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit =  (e: any) => {
-    // handleSaveForm()
-    console.log(e);
-  };
+  const { dataList,setDataList } = useContext(DataContext);
+  console.log("dataList : ",dataList);
 
+  useEffect(() => {
+    console.log("dataList:", dataList);
+  }, [dataList]);
+
+  const onSubmit = async (e: any) => {
+    console.log(e);
+    // handleSaveForm()
+    // const people = await prisma.person.findMany();
+    // console.log('All people:', people);
+  };
+  // const { rows } = await sql`SELECT * from CARTS where user_id=${params.user}`;
   return (
-    <form style={{width:"100%"}} onSubmit={handleSubmit(onSubmit)}>
+    <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+      a,or
       <Flex
         height={{ base: "90vh", md: "89dvh" }}
         bg={"gray.100"}
@@ -164,11 +178,10 @@ export default function page() {
                 </Select>
               </FormControl>
             </Box>
-            
           </Flex>
 
           <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
-          <Box m={2} width={"100%"}>
+            <Box m={2} width={"100%"}>
               <Text
                 fontSize={12}
                 fontWeight={"light"}
@@ -178,11 +191,7 @@ export default function page() {
                 داروخانه لینک
               </Text>
               <FormControl>
-              <TagGenerator 
-              control={control}
-              name="pharmacy"
-              />
-
+                <TagGenerator control={control} name="pharmacy" />
               </FormControl>
             </Box>
           </Flex>

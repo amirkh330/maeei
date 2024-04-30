@@ -23,14 +23,23 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 
-
-
-
-import logo from "images/maeei bg.png"
+import logo from "images/maeei bg.png";
 import Image from "next/image";
+import { useContext, useEffect } from "react";
+import { DataContext } from "@/app/layout";
 
-export default function NavBarLayout({ children }: any) {
+export default function NavBarLayout({ children, data }: any) {
   const { isOpen, onToggle } = useDisclosure();
+
+  const { dataList, setDataList } = useContext<any>(DataContext);
+console.log(data);
+
+  useEffect(() => {
+    console.log("amir");
+    
+    data && setDataList(data);
+  }, [data]);
+
 
   return (
     <>
@@ -53,7 +62,7 @@ export default function NavBarLayout({ children }: any) {
             justifyContent={"space-between"}
           >
             <IconButton
-            color="white"
+              color="white"
               onClick={onToggle}
               icon={
                 isOpen ? (
@@ -67,17 +76,19 @@ export default function NavBarLayout({ children }: any) {
             />
           </Flex>
 
-          <Flex me={{base:10,md:0}} width="full" alignItems="center" justify={{ base: "center", md: "space-between" }}>
-          
-            <Image  width={120} src={logo} alt="logo"/>
+          <Flex
+            me={{ base: 10, md: 0 }}
+            width="full"
+            alignItems="center"
+            justify={{ base: "center", md: "space-between" }}
+          >
+            <Image width={120} src={logo} alt="logo" />
 
-            <Flex display={{ base: "none", md: "flex" }} >
+            <Flex display={{ base: "none", md: "flex" }}>
               <DesktopNav />
             </Flex>
-            <Flex display={{  base: "flex",md: "none" }} ></Flex>
+            <Flex display={{ base: "flex", md: "none" }}></Flex>
           </Flex>
-
-          
         </Flex>
 
         <Collapse in={isOpen} animateOpacity>
@@ -90,8 +101,8 @@ export default function NavBarLayout({ children }: any) {
 }
 
 const DesktopNav = () => {
-  const linkColor = "white"
-  const linkHoverColor = "gray.500"
+  const linkColor = "white";
+  const linkHoverColor = "gray.500";
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
