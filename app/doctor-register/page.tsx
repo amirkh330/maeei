@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
+import TagGenerator from "@/components/TagGenerator/TagGenerator";
 import {
   Box,
   Button,
@@ -12,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
+// import { handleSaveForm } from "../api/handler";
 
 export default function page() {
   const borderColor = "gray.500";
@@ -31,15 +33,17 @@ export default function page() {
     { id: 12, title: "پیوند کلیه" },
     { id: 13, title: "غدد اطفال" },
     { id: 14, title: "غدد درون ریز" },
-    { id: 15, title: "ژنتیک" },
+    { id: 15, title: "fuck me hard" },
   ];
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (e: any) => {
+  const onSubmit =  (e: any) => {
+    // handleSaveForm()
     console.log(e);
   };
 
@@ -141,28 +145,6 @@ export default function page() {
               </FormControl>
             </Box>
             <Box m={2} width={"100%"}>
-              <Text
-                fontSize={12}
-                fontWeight={"light"}
-                color={titleColor}
-                mb="2"
-              >
-                شماره مطب
-              </Text>
-              <FormControl>
-                <Input
-                  {...register("office_number")}
-                  _placeholder={{ color: "gray.600" }}
-                  textColor={"black"}
-                  borderColor={borderColor}
-                  placeholder="وارد کنید"
-                />
-              </FormControl>
-            </Box>
-          </Flex>
-
-          <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
-            <Box m={2} width={"100%"}>
               <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
                 تخصص
               </Text>
@@ -180,6 +162,27 @@ export default function page() {
                     </option>
                   ))}
                 </Select>
+              </FormControl>
+            </Box>
+            
+          </Flex>
+
+          <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
+          <Box m={2} width={"100%"}>
+              <Text
+                fontSize={12}
+                fontWeight={"light"}
+                color={titleColor}
+                mb="2"
+              >
+                داروخانه لینک
+              </Text>
+              <FormControl>
+              <TagGenerator 
+              control={control}
+              name="pharmacy"
+              />
+
               </FormControl>
             </Box>
           </Flex>
