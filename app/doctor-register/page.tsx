@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
+import { apiCreatePerson } from "@/api-request";
+import { useDBProvider } from "@/components/DB/DBProvider";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
-import { sql } from "@vercel/postgres";
 import {
   Box,
   Button,
@@ -12,14 +13,13 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { PrismaClient } from "@prisma/client/extension";
-import { DataContext } from "../layout";
-// import { handleSaveForm } from "../api/handler";
 
 export default function page() {
-  // const prisma = new PrismaClient();
+  
+
+
   const borderColor = "gray.500";
   const titleColor = "gray.700";
   const expertsList = [
@@ -46,15 +46,11 @@ export default function page() {
     formState: { errors },
   } = useForm();
 
-  const { dataList,setDataList } = useContext(DataContext);
-  console.log("dataList : ",dataList);
 
-  useEffect(() => {
-    console.log("dataList:", dataList);
-  }, [dataList]);
+
 
   const onSubmit = async (e: any) => {
-    console.log(e);
+    apiCreatePerson(e)
     // handleSaveForm()
     // const people = await prisma.person.findMany();
     // console.log('All people:', people);
@@ -62,7 +58,6 @@ export default function page() {
   // const { rows } = await sql`SELECT * from CARTS where user_id=${params.user}`;
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-      a,or
       <Flex
         height={{ base: "90vh", md: "89dvh" }}
         bg={"gray.100"}

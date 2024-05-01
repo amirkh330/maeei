@@ -32,13 +32,13 @@ export default function NavBarLayout({ children, data }: any) {
   const { isOpen, onToggle } = useDisclosure();
 
   const { dataList, setDataList } = useContext<any>(DataContext);
-console.log(data);
+// console.log(data);
 
-  useEffect(() => {
-    console.log("amir");
+//   useEffect(() => {
+//     console.log("amir");
     
-    data && setDataList(data);
-  }, [data]);
+//     data && setDataList(data);
+//   }, [data]);
 
 
   return (

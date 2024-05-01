@@ -1,15 +1,15 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-export async function getPersons() {
-  const data = await prisma.person.findMany()
-  return data
-}
+export const useDBProvider = () => {
+  const getAll = async () => {
+    const data = await prisma.person.findMany();
+    return data;
+  };
+  const persons = getAll();
 
-export default async function DBProvider({children}:any){
-  const data = await getPersons()
-  return(
-    <>{children(data)}</>
-  )
-}
+  return {
+    persons,
+  };
+};
