@@ -5,7 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import NavBarLayout from "@/components/NavBarLayout/NavBarLayout";
 import { createContext, useState } from "react";
 
-export const DataContext = createContext<any>('data');
+export const DataContext = createContext<any>("data");
 
 export default function RootLayout({
   children,
@@ -16,13 +16,10 @@ export default function RootLayout({
   return (
     <html>
       <body dir="rtl">
-      <DataContext.Provider value={{dataList,setDataList}}>
-        <ChakraProvider theme={ChakraTheme}>
-          <NavBarLayout>{children}</NavBarLayout>
-            {/* {(data: any) => {
-              return <NavBarLayout data={data}>{children}</NavBarLayout>;
-            }} */}
-        </ChakraProvider>
+        <DataContext.Provider value={{ dataList, setDataList }}>
+          <ChakraProvider theme={ChakraTheme}>
+            <NavBarLayout>{children}</NavBarLayout>
+          </ChakraProvider>
         </DataContext.Provider>
       </body>
     </html>
