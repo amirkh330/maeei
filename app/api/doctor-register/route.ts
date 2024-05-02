@@ -1,5 +1,4 @@
 import { prisma } from "../../../util/client";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const person = await request.json();

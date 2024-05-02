@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { apiGetALL } from "@/api-request";
-import { expertsList, provinceList } from "@/lib/Data";
+import { apiGetALL } from "@/util/api-request";
+import { expertsList, provinceList } from "@/util/Data";
 import { DownloadIcon } from "@chakra-ui/icons";
 import {
   Table,
@@ -30,6 +30,7 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function page() {
@@ -48,16 +49,26 @@ export default function page() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (password == "1373") {
-      toast({
-        title: "با موفقیت وارد شدید",
-        description: "لطفا چند لحظه صبر کنید",
-        status: "success",
-        duration: 2500,
-        isClosable: true,
-        position: "top",
-      });
-      setTimeout(() => setIsValid(true), 1500);
+    if (password.length == 4) {
+      if (password == "1373") {
+        toast({
+          title: "با موفقیت وارد شدید",
+          description: "لطفا چند لحظه صبر کنید",
+          status: "success",
+          duration: 2500,
+          isClosable: true,
+          position: "top",
+        });
+        setTimeout(() => setIsValid(true), 1500);
+      } else {
+        toast({
+          description: "رمز ورود اشتباه است",
+          status: "error",
+          duration: 2500,
+          isClosable: true,
+          position: "top",
+        });
+      }
     }
   }, [password]);
 
@@ -65,7 +76,11 @@ export default function page() {
     tableData.length ? (
       <CustomTable Data={tableData} />
     ) : (
-      <Flex w={"100%"} justifyContent={"center"} mt={{ md: "220px" }}>
+      <Flex
+        w={"100%"}
+        justifyContent={"center"}
+        mt={{ base: "200px", md: "220px" }}
+      >
         <Spinner size="lg" emptyColor="gray.200" color="blue.500" />
       </Flex>
     )
@@ -78,21 +93,29 @@ const CustomTable = ({ Data }: any) => {
   const fontSizeHeader = 12;
   const fontSizeTitle = 12;
   return (
-    <Box w={"70%"} mt="20" mx="auto" border={1} borderColor={"gray.500"}>
+    <Box
+      w={{ base: "100%", md: "70%" }}
+      mt="20"
+      mx="auto"
+      border={1}
+      borderColor={"gray.500"}
+    >
       <Flex
         w="100"
         justifyContent={"space-between"}
         alignItems={"center"}
         my="4"
       >
-        <Text fontSize={20}>اطلاعات وارد شده تا این لحظه</Text>
+        <Text fontSize={{ base: 14, md: 20 }}>
+          اطلاعات وارد شده تا این لحظه
+        </Text>
         <Button
           rightIcon={<DownloadIcon />}
           colorScheme="green"
           size={"sx"}
-          fontSize={"12"}
-          py="2"
-          px={"4"}
+          fontSize={{ base: 10, md: 12 }}
+          py={{ base: 1, md: 2 }}
+          px={{ base: 2, md: 4 }}
         >
           دانلود اطلاعات
         </Button>
@@ -189,15 +212,16 @@ const CustomTable = ({ Data }: any) => {
 };
 
 const PassWordConfirm = ({ password, setPassword }: any) => {
+  
   const handlePinChange = (index: any, value: any) => {
     setPassword(
       (prevPin: any) =>
         prevPin.slice(0, index) + value + prevPin.slice(index + 1)
     );
   };
-
+  const router = useRouter();
   return (
-    <Modal isOpen={true} onClose={() => {}}>
+    <Modal isOpen={true} onClose={() => router.push("/")}>
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />

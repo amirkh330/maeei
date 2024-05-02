@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { log } from "console";
 import logo from "images/maeei bg.png";
 import Image from "next/image";
 
@@ -7,7 +6,7 @@ export default function Home() {
   return (
     <Flex
       direction="column"
-      height={{base:"92dvh",md:"90dvh"}}
+      height={{base:"92dvh",md:"92dvh"}}
       backgroundColor={"#335063 "}
       alignItems={"center"}
       justifyContent={"center"}
