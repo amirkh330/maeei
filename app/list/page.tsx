@@ -60,7 +60,6 @@ export default function page() {
       setTimeout(() => setIsValid(true), 1500);
     }
   }, [password]);
-  return <CustomTable Data={tableData} />;
 
   return !isValid ? (
     tableData.length ? (
@@ -76,8 +75,8 @@ export default function page() {
 }
 
 const CustomTable = ({ Data }: any) => {
-const fontSizeHeader=12
-const fontSizeTitle=12
+  const fontSizeHeader = 12;
+  const fontSizeTitle = 12;
   return (
     <Box w={"70%"} mt="20" mx="auto" border={1} borderColor={"gray.500"}>
       <Flex
@@ -100,33 +99,83 @@ const fontSizeTitle=12
       </Flex>
       <Divider />
       <TableContainer>
-        <Table variant='striped' colorScheme='gray'>
+        <Table variant="striped" colorScheme="gray">
           <Thead>
-            <Tr >
-              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"} ></Th>
-              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"} >نام پزشک</Th>
-              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"} >شماره نظام پزشکی</Th>
-              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"} >شماره تلفن</Th>
-              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"} >شهر</Th>
-              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"} >تخصص</Th>
-              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"} >داروخانه</Th>
+            <Tr>
+              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}></Th>
+              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
+                نام پزشک
+              </Th>
+              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
+                شماره نظام پزشکی
+              </Th>
+              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
+                شماره تلفن
+              </Th>
+              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
+                شهر
+              </Th>
+              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
+                تخصص
+              </Th>
+              <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
+                داروخانه
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
-           
-           
             {Data.map((row: any, index: number) => {
               return (
                 <Tr key={index}>
-                  <Td textAlign="center" fontSize={fontSizeTitle} fontFamily={"YekanBakh"} >{index +1}</Td>
-                  <Td textAlign="center" fontSize={fontSizeTitle} fontFamily={"YekanBakh"} >{row.name}</Td>
-                  <Td textAlign="center" fontSize={fontSizeTitle} fontFamily={"YekanBakh"} >{row.serialize_number}</Td>
-                  <Td textAlign="center" fontSize={fontSizeTitle} fontFamily={"YekanBakh"} >{row.mobile}</Td>
-                  <Td textAlign="center" fontSize={fontSizeTitle} fontFamily={"YekanBakh"} >{provinceList.find((i:any)=>i.id == row.province)?.title}</Td>
-                  <Td textAlign="center" fontSize={fontSizeTitle} fontFamily={"YekanBakh"} >{expertsList.find((i:any)=>i.id == row.expertise)?.title}</Td>
-                  <Td textAlign="center" fontSize={fontSizeTitle} fontFamily={"YekanBakh"} >
+                  <Td
+                    textAlign="center"
+                    fontSize={fontSizeTitle}
+                    fontFamily={"YekanBakh"}
+                  >
+                    {index + 1}
+                  </Td>
+                  <Td
+                    textAlign="center"
+                    fontSize={fontSizeTitle}
+                    fontFamily={"YekanBakh"}
+                  >
+                    {row.name}
+                  </Td>
+                  <Td
+                    textAlign="center"
+                    fontSize={fontSizeTitle}
+                    fontFamily={"YekanBakh"}
+                  >
+                    {row.serialize_number}
+                  </Td>
+                  <Td
+                    textAlign="center"
+                    fontSize={fontSizeTitle}
+                    fontFamily={"YekanBakh"}
+                  >
+                    {row.mobile}
+                  </Td>
+                  <Td
+                    textAlign="center"
+                    fontSize={fontSizeTitle}
+                    fontFamily={"YekanBakh"}
+                  >
+                    {provinceList.find((i: any) => i.id == row.province)?.title}
+                  </Td>
+                  <Td
+                    textAlign="center"
+                    fontSize={fontSizeTitle}
+                    fontFamily={"YekanBakh"}
+                  >
+                    {expertsList.find((i: any) => i.id == row.expertise)?.title}
+                  </Td>
+                  <Td
+                    textAlign="center"
+                    fontSize={fontSizeTitle}
+                    fontFamily={"YekanBakh"}
+                  >
                     {row.pharmacy?.map((ph: any, index: number) => {
-                      return `${index !== 0 ?"-":''} ${ph}`;
+                      return `${index !== 0 ? "-" : ""} ${ph}`;
                     })}
                   </Td>
                 </Tr>
