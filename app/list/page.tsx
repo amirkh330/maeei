@@ -35,7 +35,7 @@ import React, { useEffect, useState } from "react";
 export default function page() {
   const [tableData, setTableData] = useState([]);
   const toast = useToast();
-
+  document.title = "اطلاعات پزشکان";
   useEffect(() => {
     apiGetALL()
       .then((data) => setTableData(data))

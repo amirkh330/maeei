@@ -16,6 +16,7 @@ import {
   useBreakpointValue,
   useToast,
 } from "@chakra-ui/react";
+import Head from "next/head";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -63,10 +64,9 @@ export default function page() {
         });
       });
   };
-
+  document.title = "ورود اطلاعات";
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-      
       {/* <Button onClick={deleteItem}>Rest</Button> */}
       <Flex
         height={{ base: "90vh", md: "89dvh" }}
@@ -114,8 +114,7 @@ export default function page() {
                   borderColor={borderColor}
                   placeholder="وارد کنید"
                 />
-                  <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
-                
+                <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
             </Box>
             <Box m={2} width={"100%"}>
@@ -163,7 +162,7 @@ export default function page() {
                   borderColor={borderColor}
                   placeholder="وارد کنید"
                 />
-                  <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
+                <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
             </Box>
 
@@ -184,33 +183,32 @@ export default function page() {
 
           <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
             <Box m={2} width={"100%"}>
-            <FormControl isInvalid={!!errors.province}>
-              <Text
-                fontSize={12}
-                fontWeight={"light"}
-                color={titleColor}
-                mb="2"
-              >
-                استان
-              </Text>
-              <Select
-                {...register("province", { required: true })}
-                _placeholder={{ color: "gray.600" }}
-                dir="rtl"
-                borderColor={borderColor}
-                placeholder="انتخاب کنید"
-              >
-                {provinceList.map((ex) => (
-                  <option key={ex.id} value={ex.id}>
-                    {ex.title}
-                  </option>
-                ))}
-              </Select>
+              <FormControl isInvalid={!!errors.province}>
+                <Text
+                  fontSize={12}
+                  fontWeight={"light"}
+                  color={titleColor}
+                  mb="2"
+                >
+                  استان
+                </Text>
+                <Select
+                  {...register("province", { required: true })}
+                  _placeholder={{ color: "gray.600" }}
+                  dir="rtl"
+                  borderColor={borderColor}
+                  placeholder="انتخاب کنید"
+                >
+                  {provinceList.map((ex) => (
+                    <option key={ex.id} value={ex.id}>
+                      {ex.title}
+                    </option>
+                  ))}
+                </Select>
                 <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
             </Box>
             <Box m={2} width={"100%"}>
-              
               <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
                 تخصص
               </Text>
@@ -228,7 +226,7 @@ export default function page() {
                     </option>
                   ))}
                 </Select>
-                  <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
+                <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
             </Box>
           </Flex>
