@@ -7,6 +7,6 @@ export async function POST(request: Request) {
     const data = await prisma.person.create({ data: person });
     return new Response("success");
   } catch (error) {
-    return error;
+    return new Response("error", { status: 500 }); // Handle errors
   }
 }
