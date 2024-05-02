@@ -6,10 +6,10 @@ export async function apiGetALL() {
 }
 
 export async function apiCreatePerson(body: any) {
-  const response = await fetch(`http://localhost:3000/api/doctor-register`, {
-    method: "POST",
-    body,
-  });
+  const response = await axios.post(
+    `http://localhost:3000/api/doctor-register`,
+    body
+  );
 
   return response;
 }

@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import { apiCreatePerson } from "@/api-request";
-import { useDBProvider } from "@/components/DB/DBProvider";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
+import { expertsList, provinceList } from "@/lib/Data";
 import {
   Box,
   Button,
@@ -12,50 +12,56 @@ import {
   Select,
   Text,
   Textarea,
+  useBreakpointValue,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function page() {
-  
-
-
   const borderColor = "gray.500";
   const titleColor = "gray.700";
-  const expertsList = [
-    { id: 1, title: "انکولوژی" },
-    { id: 2, title: "هماتولوژی" },
-    { id: 3, title: "جراحی سرطان" },
-    { id: 4, title: "کاردیولوژی" },
-    { id: 5, title: "جراحی قلب" },
-    { id: 6, title: "پزشک قلب اطفال" },
-    { id: 7, title: "تولید مثل و ناباروری" },
-    { id: 8, title: "آندرولوژی" },
-    { id: 9, title: "جراحی زنان" },
-    { id: 10, title: "نفرولوژی" },
-    { id: 11, title: "پزشکی فشار خون بالا" },
-    { id: 12, title: "پیوند کلیه" },
-    { id: 13, title: "غدد اطفال" },
-    { id: 14, title: "غدد درون ریز" },
-    { id: 15, title: "ژنتیک" },
-  ];
+  const [loading, setLoading] = useState(false);
   const {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-
-
-
-
+  const toast = useToast();
+  const position = useBreakpointValue({
+    base: "top", // Default for smaller screens (mobile)
+    md: "bottom-right", // Position on bottom-right for larger screens
+  }) as any;
   const onSubmit = async (e: any) => {
+    setLoading(true);
     apiCreatePerson(e)
-    // handleSaveForm()
-    // const people = await prisma.person.findMany();
-    // console.log('All people:', people);
+      .then((data) => {
+        setLoading(false);
+        reset(),
+          toast({
+            description: "افزودن پزشک با موفیت انجام شد",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+            position,
+          });
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+        toast({
+          description: "اتباط با سرور به خطا مواجه شد",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+          position,
+        });
+      });
   };
-  // const { rows } = await sql`SELECT * from CARTS where user_id=${params.user}`;
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       <Flex
@@ -67,14 +73,14 @@ export default function page() {
       >
         <Flex
           p={3}
-          mt={{ md: 2, base: 5 }}
+          mt={{ md: 2, base: 2 }}
           borderRadius={"4%"}
           border={"1px solid"}
           borderColor={"gray.300"}
           width={{ base: "90%", md: "60%" }}
           direction={"column"}
         >
-          <Flex justify={"center"} mb="8">
+          <Flex justify={"center"} mb={{ md: 8, base: 2 }}>
             <Text fontSize={20} fontWeight={500}>
               ورود اطلاعات پزشک
             </Text>
@@ -153,6 +159,46 @@ export default function page() {
                 />
               </FormControl>
             </Box>
+
+            {/* <Box m={2} width={"100%"}>
+              <Text
+                fontSize={12}
+                fontWeight={"light"}
+                color={titleColor}
+                mb="2"
+              >
+                داروخانه لینک
+              </Text>
+              <FormControl>
+                <TagGenerator control={control} name="pharmacy" />
+              </FormControl>
+            </Box> */}
+          </Flex>
+
+          <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
+            <Box m={2} width={"100%"}>
+              <Text
+                fontSize={12}
+                fontWeight={"light"}
+                color={titleColor}
+                mb="2"
+              >
+                استان
+              </Text>
+              <Select
+                {...register("expertise")}
+                _placeholder={{ color: "gray.600" }}
+                dir="rtl"
+                borderColor={borderColor}
+                placeholder="انتخاب کنید"
+              >
+                {provinceList.map((ex) => (
+                  <option key={ex.id} value={ex.id}>
+                    {ex.title}
+                  </option>
+                ))}
+              </Select>
+            </Box>
             <Box m={2} width={"100%"}>
               <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
                 تخصص
@@ -191,7 +237,11 @@ export default function page() {
             </Box>
           </Flex>
 
-          <Flex align={"center"} justifyContent={{ md: "center" }}>
+          <Flex
+            align={"center"}
+            justifyContent={{ md: "center" }}
+            flexWrap={{ md: "nowrap", base: "wrap" }}
+          >
             <Box m={2} width={"100%"}>
               <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
                 آدرس
@@ -209,7 +259,12 @@ export default function page() {
           </Flex>
 
           <Flex justify={"flex-end"} mx="2" mt={{ base: 5, md: 10 }}>
-            <Button type="submit" size="sm" colorScheme="blue">
+            <Button
+              isLoading={loading}
+              type="submit"
+              size="sm"
+              colorScheme="blue"
+            >
               <Text fontSize={12} fontWeight={300}>
                 ذخیره اطلاعات
               </Text>

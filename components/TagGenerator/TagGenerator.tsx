@@ -1,5 +1,13 @@
-import { useState } from "react";
-import { Tag, TagCloseButton, TagLabel, Input, Flex } from "@chakra-ui/react";
+import { useState, useRef, useEffect } from "react";
+import {
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  Input,
+  Flex,
+  Button,
+  Text,
+} from "@chakra-ui/react";
 import { useController, Control } from "react-hook-form";
 
 interface TagGeneratorProps {
@@ -8,26 +16,26 @@ interface TagGeneratorProps {
 }
 
 export default function TagGenerator({ control, name }: TagGeneratorProps) {
-  const { field, fieldState } = useController({ control, name });
-  const { value, onChange } = field;
+  const { field, fieldState, formState } = useController({ control, name });
+  const { value, onChange } = field; // Use provided onChange handler
   const { error } = fieldState;
-
+  useEffect(() => {
+    setTags(value ?? []);
+  }, [value]);
   const [tags, setTags] = useState<string[]>([]);
+  const [valueInput, setValueInput] = useState<string>("");
 
   const handleTagClose = (tag: string) => {
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
-    onChange(updatedTags); // Update the form field value
+    onChange(updatedTags); // Update form field value using onChange
   };
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && event.currentTarget.value.trim() !== "") {
-      const newTag = event.currentTarget.value.trim();
-      const updatedTags = [...tags, newTag];
-      setTags(updatedTags);
-      onChange(updatedTags); // Update the form field value
-      event.currentTarget.value = ""; // Clear the input field
-    }
+  const handleInputKeyDown = () => {
+    const updatedTags = [...tags, valueInput];
+    setValueInput("");
+    setTags(updatedTags);
+    onChange(updatedTags);
   };
 
   return (
@@ -45,15 +53,34 @@ export default function TagGenerator({ control, name }: TagGeneratorProps) {
           <TagCloseButton onClick={() => handleTagClose(tag)} />
         </Tag>
       ))}
-      <Input
-        {...field}
-        onKeyDown={handleInputKeyDown}
-        isInvalid={!!error}
-        _placeholder={{ color: "gray.600" }}
-        textColor={"black"}
+      <Flex
+        align="center"
+        border={"1px solid"}
         borderColor={"gray.500"}
-        placeholder="وارد کنید"
-      />
+        borderRadius="8px"
+        h={"32px"}
+        w="100%"
+      >
+        <Input
+          isInvalid={!!error}
+          _placeholder={{ color: "gray.600" }}
+          textColor={"black"}
+          border={"none"}
+          value={valueInput}
+          onChange={(e) => setValueInput(e.target.value)}
+          _focusVisible={"noen"}
+          placeholder="وارد کنید"
+        />
+        <Button
+          isDisabled={!valueInput}
+          onClick={handleInputKeyDown}
+          size="xs"
+          colorScheme="blue"
+          mx="1"
+        >
+          <Text fontSize={10}>تایید</Text>
+        </Button>
+      </Flex>
     </Flex>
   );
 }

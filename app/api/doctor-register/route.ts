@@ -1,4 +1,12 @@
-export async function POST(request: Request) {
+import { prisma } from "../../../util/client";
+import { NextResponse } from "next/server";
 
-  return new Response("Hello, Next.js!");
+export async function POST(request: Request) {
+  const person = await request.json();
+  try {
+    const data = await prisma.person.create({ data: person });
+    return new Response("success");
+  } catch (error) {
+    return error;
+  }
 }
