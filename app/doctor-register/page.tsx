@@ -36,6 +36,7 @@ export default function page() {
     base: "top", // Default for smaller screens (mobile)
     md: "top", // Position on bottom-right for larger screens
   }) as any;
+
   const onSubmit = async (e: any) => {
     setLoading(true);
     apiCreatePerson(e)
@@ -64,6 +65,7 @@ export default function page() {
         });
       });
   };
+
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       {/* <Button onClick={deleteItem}>Rest</Button> */}
@@ -165,19 +167,6 @@ export default function page() {
               </FormControl>
             </Box>
 
-            {/* <Box m={2} width={"100%"}>
-              <Text
-                fontSize={12}
-                fontWeight={"light"}
-                color={titleColor}
-                mb="2"
-              >
-                داروخانه لینک
-              </Text>
-              <FormControl>
-                <TagGenerator control={control} name="pharmacy" />
-              </FormControl>
-            </Box> */}
           </Flex>
 
           <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
