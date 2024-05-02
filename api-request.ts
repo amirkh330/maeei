@@ -13,3 +13,8 @@ export async function apiCreatePerson(body: any) {
 
   return response;
 }
+
+export async function deleteItem() {
+  const response = await axios.delete("http://localhost:3000/api/list");
+  return response.data;
+}

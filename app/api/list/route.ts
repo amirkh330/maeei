@@ -7,3 +7,12 @@ export async function GET(request: Request, res: any) {
   
   return NextResponse.json(data)
 }
+
+
+
+export async function DELETE(request: Request, res: any) {
+  const data = await prisma.person.deleteMany();
+  
+  
+  return NextResponse.json(data)
+}

@@ -20,5 +20,6 @@ model Person {
     serialize_number     String
     address   String
     expertise String
+    province  String
     pharmacy  String[]
 }

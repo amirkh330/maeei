@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { apiCreatePerson } from "@/api-request";
+import { apiCreatePerson, deleteItem } from "@/api-request";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
 import { expertsList, provinceList } from "@/lib/Data";
 import {
@@ -8,6 +8,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   Input,
   Select,
   Text,
@@ -32,7 +33,7 @@ export default function page() {
   const toast = useToast();
   const position = useBreakpointValue({
     base: "top", // Default for smaller screens (mobile)
-    md: "bottom-right", // Position on bottom-right for larger screens
+    md: "top", // Position on bottom-right for larger screens
   }) as any;
   const onSubmit = async (e: any) => {
     setLoading(true);
@@ -62,8 +63,11 @@ export default function page() {
         });
       });
   };
+
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+      
+      {/* <Button onClick={deleteItem}>Rest</Button> */}
       <Flex
         height={{ base: "90vh", md: "89dvh" }}
         bg={"gray.100"}
@@ -102,14 +106,16 @@ export default function page() {
               >
                 نام دکتر
               </Text>
-              <FormControl>
+              <FormControl isInvalid={!!errors.name}>
                 <Input
-                  {...register("name")}
+                  {...register("name", { required: true })}
                   _placeholder={{ color: "gray.600" }}
                   textColor={"black"}
                   borderColor={borderColor}
                   placeholder="وارد کنید"
                 />
+                  <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
+                
               </FormControl>
             </Box>
             <Box m={2} width={"100%"}>
@@ -149,14 +155,15 @@ export default function page() {
               >
                 شماره موبایل
               </Text>
-              <FormControl>
+              <FormControl isInvalid={!!errors.mobile}>
                 <Input
-                  {...register("mobile")}
+                  {...register("mobile", { required: true })}
                   _placeholder={{ color: "gray.600" }}
                   textColor={"black"}
                   borderColor={borderColor}
                   placeholder="وارد کنید"
                 />
+                  <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
             </Box>
 
@@ -177,6 +184,7 @@ export default function page() {
 
           <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
             <Box m={2} width={"100%"}>
+            <FormControl isInvalid={!!errors.province}>
               <Text
                 fontSize={12}
                 fontWeight={"light"}
@@ -186,7 +194,7 @@ export default function page() {
                 استان
               </Text>
               <Select
-                {...register("expertise")}
+                {...register("province", { required: true })}
                 _placeholder={{ color: "gray.600" }}
                 dir="rtl"
                 borderColor={borderColor}
@@ -198,14 +206,17 @@ export default function page() {
                   </option>
                 ))}
               </Select>
+                <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
+              </FormControl>
             </Box>
             <Box m={2} width={"100%"}>
+              
               <Text fontSize={12} fontWeight={300} color={titleColor} mb="2">
                 تخصص
               </Text>
-              <FormControl>
+              <FormControl isInvalid={!!errors.expertise}>
                 <Select
-                  {...register("expertise")}
+                  {...register("expertise", { required: true })}
                   _placeholder={{ color: "gray.600" }}
                   dir="rtl"
                   borderColor={borderColor}
@@ -217,6 +228,7 @@ export default function page() {
                     </option>
                   ))}
                 </Select>
+                  <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
             </Box>
           </Flex>
