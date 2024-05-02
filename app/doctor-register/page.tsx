@@ -64,7 +64,6 @@ export default function page() {
         });
       });
   };
-  document.title = "ورود اطلاعات";
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       {/* <Button onClick={deleteItem}>Rest</Button> */}
