@@ -1,13 +1,14 @@
 import axios from "axios";
-
+const API="https://maeei.vercel.app"
+const APILocale="http://localhost:3000"
 export async function apiGetALL() {
-  const response = await axios("http://localhost:3000/api/list");
+  const response = await axios(`${API}/api/list`);
   return response.data;
 }
 
 export async function apiCreatePerson(body: any) {
   const response = await axios.post(
-    `http://localhost:3000/api/doctor-register`,
+    `${API}/api/doctor-register`,
     body
   );
 
@@ -15,6 +16,6 @@ export async function apiCreatePerson(body: any) {
 }
 
 export async function deleteItem() {
-  const response = await axios.delete("http://localhost:3000/api/list");
+  const response = await axios.delete(`${API}/api/list`);
   return response.data;
 }
