@@ -55,6 +55,18 @@ self.addEventListener('fetch', (event) => {
   }
 });
 
+self.addEventListener('beforeinstallprompt', (event) => {
+    // Prevent the default mini-infobar
+    event.preventDefault();
+  
+    // Store the event for later use
+    deferredPrompt = event;
+  
+    // Optionally, customize the installation prompt message
+    const installPromptMessage = 'Install [App Name] for a faster, offline experience!';
+    showInstallPrompt(installPromptMessage);
+  });
+
 
 function checkForOfflineData() {
     // Check for stored form data (e.g., using IndexedDB)
