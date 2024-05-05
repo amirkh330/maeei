@@ -16,7 +16,7 @@ export default function RootLayout({
     <html>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>My Title</title>
+        <title>Maeei</title>
         <link rel="manifest" href="/manifest.json" />
       </Helmet>
       <body dir="rtl">
