@@ -23,5 +23,8 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/NavBarLayout/NavBarLayout.tsx", "lib/prisma.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "rules": {
+    "commonjs/no-require-in-modules": "off" // Or "off" for this file only
+  }
 }
