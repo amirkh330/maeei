@@ -1,12 +1,15 @@
 "use client";
 
+import { useLocaleStorage } from "@/util/useLocaleStorge";
 import {
+  BellIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   CloseIcon,
   HamburgerIcon,
 } from "@chakra-ui/icons";
 import {
+  Badge,
   Box,
   Collapse,
   Flex,
@@ -26,7 +29,7 @@ import Image from "next/image";
 
 export default function NavBarLayout({ children, data }: any) {
   const { isOpen, onToggle } = useDisclosure();
-
+  const { offlineStoreForm } = useLocaleStorage();
   return (
     <>
       <Box>
@@ -36,13 +39,12 @@ export default function NavBarLayout({ children, data }: any) {
           minH={"60px"}
           py={{ base: 2 }}
           px={{ base: 4 }}
-          // borderBottom={1}
           borderStyle={"solid"}
-          // borderColor={useColorModeValue("gray.200", "gray.900")}
           align={"center"}
+          justifyContent={"space-between"}
         >
           <Flex
-            flex={{ base: 1, md: "auto" }}
+            // flex={{ base: 1, md: "auto" }}
             ml={{ base: -2 }}
             display={{ base: "flex", md: "none" }}
             justifyContent={"space-between"}
@@ -62,18 +64,33 @@ export default function NavBarLayout({ children, data }: any) {
             />
           </Flex>
 
-          <Flex
-            me={{ base: 10, md: 0 }}
-            width="full"
-            alignItems="center"
-            justify={{ base: "center", md: "space-between" }}
-          >
-            <Image width={120} src={logo} alt="logo" />
+          <Image width={120} src={logo} alt="logo" />
 
-            <Flex display={{ base: "none", md: "flex" }}>
-              <DesktopNav />
-            </Flex>
-            <Flex display={{ base: "flex", md: "none" }}></Flex>
+          <Flex display={{ base: "none", md: "flex" }}>
+            <DesktopNav />
+          </Flex>
+          <Flex position="relative" display={{ base: "flex", md: "none" }}>
+            {offlineStoreForm ? (
+              <>
+                <BellIcon fontSize="22" color="white" />
+                <Badge
+                  position="absolute"
+                  top="10px"
+                  left="12px"
+                  width="14px"
+                  height="14px"
+                  display="flex"
+                  fontSize="10px"
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  backgroundColor="red"
+                  textColor="white"
+                  borderRadius={"50%"}
+                >
+                  {offlineStoreForm.length}
+                </Badge>
+              </>
+            ) : null}
           </Flex>
         </Flex>
 
@@ -90,9 +107,10 @@ const DesktopNav = () => {
   const linkColor = "white";
   const linkHoverColor = "gray.500";
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
+  const { offlineStoreForm } = useLocaleStorage();
 
   return (
-    <Stack direction={"row"} spacing={4}>
+    <Stack alignItems="center" direction={"row"} spacing={4}>
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
@@ -132,6 +150,41 @@ const DesktopNav = () => {
           </Popover>
         </Box>
       ))}
+      {/* {offlineStoreForm.length && (
+          <Popover trigger={"hover"} placement={"bottom-start"}>
+            <PopoverTrigger>
+              <Box
+                as="a"
+                p={2}
+                display="flex"
+                alignItems="center"
+                fontSize={"sm"}
+                fontWeight={500}
+                color={linkColor}
+                _hover={{
+                  textDecoration: "none",
+                  color: linkHoverColor,
+                }}
+              >
+                <Text
+                  mx="2"
+                  bgColor={"white"}
+                  color="red"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  w={4}
+                  h={4}
+                  fontSize={12}
+                  borderRadius="50%"
+                >
+                  {offlineStoreForm?.length}
+                </Text>
+                فرم ثبت نشده
+              </Box>
+            </PopoverTrigger>
+          </Popover>
+      )} */}
     </Stack>
   );
 };
@@ -249,36 +302,6 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-  // {
-  //   label: "Inspiration",
-  //   children: [
-  //     {
-  //       label: "Explore Design Work",
-  //       subLabel: "Trending Design to inspire you",
-  //       href: "#",
-  //     },
-  //     {
-  //       label: "New & Noteworthy",
-  //       subLabel: "Up-and-coming Designers",
-  //       href: "#",
-  //     },
-  //   ],
-  // },
-  // {
-  //   label: "Find Work",
-  //   children: [
-  //     {
-  //       label: "Job Board",
-  //       subLabel: "Find your dream design job",
-  //       href: "#",
-  //     },
-  //     {
-  //       label: "Freelance Projects",
-  //       subLabel: "An exclusive list for contract work",
-  //       href: "#",
-  //     },
-  //   ],
-  // },
   {
     label: "ورود اطلاعات",
     href: "/doctor-register",

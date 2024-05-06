@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { apiCreatePerson, deleteItem } from "@/util/api-request";
+import { apiCreatePerson } from "@/util/api-request";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
 import { expertsList, provinceList } from "@/util/Data";
 import {
@@ -17,8 +17,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import {} from "local-storage";
 
 export default function page() {
   const borderColor = "gray.500";
@@ -37,7 +38,46 @@ export default function page() {
     md: "top", // Position on bottom-right for larger screens
   }) as any;
 
+  const offlineStore = "offlineStore";
+  const renderLocaleStorage: any = () => {
+    try {
+      return JSON.parse(localStorage.getItem(offlineStore) || '[]');
+    } catch (error) {
+      console.error("Error parsing local storage data:", error);
+      // You can choose to return an empty array or a default value here
+      return [];
+    }
+  };
+   const offlineStoreForm = renderLocaleStorage()
+
   const onSubmit = async (e: any) => {
+    if (navigator.onLine) {
+      submitOnline(e);
+    } else {
+      setLoading(false);
+      toast({
+        title: "OFFLINE",
+        description:
+          "شما افلاین هستید، ولی فرم شما ثبت شده  در صورت انلاین شدن فرم ارسال میشود",
+        status: "loading",
+        duration: 2000,
+        isClosable: true,
+        position,
+      });
+      const DB = offlineStoreForm?.length ? offlineStoreForm : [];
+      DB.push(e);
+      localStorage.setItem(offlineStore, JSON.stringify(DB));
+    }
+  };
+
+  // useEffect(() => {
+  //   if (offlineStoreForm?.length)
+  //     if (navigator.onLine) {
+  //       offlineStoreForm?.map((form: any) => submitOnline(form));
+  //     }
+  // }, [offlineStoreForm]);
+
+  const submitOnline = async (e: any) => {
     setLoading(true);
     apiCreatePerson(e)
       .then((data) => {
@@ -46,20 +86,18 @@ export default function page() {
           toast({
             description: "افزودن پزشک با موفیت انجام شد",
             status: "success",
-            duration: 9000,
+            duration: 2000,
             isClosable: true,
             position,
           });
       })
       .catch((err) => {
         setLoading(false);
-        console.log("====================================");
         console.log(err);
-        console.log("====================================");
         toast({
-          description: "اتباط با سرور به خطا مواجه شد",
+          description: "ارتباط با سرور با خطا مواجه شد",
           status: "error",
-          duration: 9000,
+          duration: 2000,
           isClosable: true,
           position,
         });
@@ -105,11 +143,11 @@ export default function page() {
                 color={titleColor}
                 mb="2"
               >
-                نام دکتر
+                نام پزشک
               </Text>
               <FormControl isInvalid={!!errors.name}>
                 <Input
-                  {...register("name", { required: true })}
+                  {...register("name", { required: false })}
                   _placeholder={{ color: "gray.600" }}
                   textColor={"black"}
                   borderColor={borderColor}
@@ -157,7 +195,7 @@ export default function page() {
               </Text>
               <FormControl isInvalid={!!errors.mobile}>
                 <Input
-                  {...register("mobile", { required: true })}
+                  {...register("mobile", { required: false })}
                   _placeholder={{ color: "gray.600" }}
                   textColor={"black"}
                   borderColor={borderColor}
@@ -166,7 +204,6 @@ export default function page() {
                 <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
             </Box>
-
           </Flex>
 
           <Flex mb="2" align={"center"} justifyContent={{ md: "center" }}>
@@ -181,7 +218,7 @@ export default function page() {
                   استان
                 </Text>
                 <Select
-                  {...register("province", { required: true })}
+                  {...register("province", { required: false })}
                   _placeholder={{ color: "gray.600" }}
                   dir="rtl"
                   borderColor={borderColor}
@@ -202,7 +239,7 @@ export default function page() {
               </Text>
               <FormControl isInvalid={!!errors.expertise}>
                 <Select
-                  {...register("expertise", { required: true })}
+                  {...register("expertise", { required: false })}
                   _placeholder={{ color: "gray.600" }}
                   dir="rtl"
                   borderColor={borderColor}

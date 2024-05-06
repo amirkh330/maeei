@@ -15,7 +15,7 @@ export async function apiCreatePerson(body: any) {
   return response;
 }
 
-export async function deleteItem() {
+export async function deleteAll() {
   const response = await axios.delete(`${API}/api/list`);
   return response.data;
 }
