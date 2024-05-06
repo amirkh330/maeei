@@ -20,6 +20,8 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {} from "local-storage";
+import { useLocaleStorage } from "@/util/useLocaleStorge";
+import { deleteAll } from "@/api-request";
 
 export default function page() {
   const borderColor = "gray.500";
@@ -38,17 +40,7 @@ export default function page() {
     md: "top", // Position on bottom-right for larger screens
   }) as any;
 
-  const offlineStore = "offlineStore";
-  const renderLocaleStorage: any = () => {
-    try {
-      return JSON.parse(localStorage.getItem(offlineStore) || '[]');
-    } catch (error) {
-      console.error("Error parsing local storage data:", error);
-      // You can choose to return an empty array or a default value here
-      return [];
-    }
-  };
-   const offlineStoreForm = renderLocaleStorage()
+  const { offlineStoreForm, offlineStore_NAME } = useLocaleStorage();
 
   const onSubmit = async (e: any) => {
     if (navigator.onLine) {
@@ -66,16 +58,42 @@ export default function page() {
       });
       const DB = offlineStoreForm?.length ? offlineStoreForm : [];
       DB.push(e);
-      localStorage.setItem(offlineStore, JSON.stringify(DB));
+      localStorage.setItem(offlineStore_NAME, JSON.stringify(DB));
     }
   };
 
   // useEffect(() => {
-  //   if (offlineStoreForm?.length)
-  //     if (navigator.onLine) {
-  //       offlineStoreForm?.map((form: any) => submitOnline(form));
-  //     }
-  // }, [offlineStoreForm]);
+    //   if (offlineStoreForm?.length)
+      //     if (navigator.onLine) {
+        //       offlineStoreForm?.map((form: any) =>
+          //         submitOnline(form)
+        //           .then(() => {
+          //             offlineStoreForm.filter((d: any) => d.id == form.id);
+          //             console.log('NEW offlineStoreForm:', offlineStoreForm)
+          //             localStorage.setItem(offlineStore_NAME, JSON.stringify(offlineStoreForm));
+          //           })
+          //           .catch((e) => console.log(e))
+          //       );
+          //     }
+          // }, [offlineStoreForm]);
+          useEffect(() => {
+            if (offlineStoreForm?.length && navigator.onLine) {
+              (async () => {
+                for (const form of [...offlineStoreForm]) { // Use spread syntax for copy
+                  try {
+                    await submitOnline(form);
+                    console.log('Form submitted successfully:', form);
+            
+                    // Update local storage after successful submission
+                    const updatedOfflineStoreForm = offlineStoreForm.filter(f => f.id !== form.id);
+                    localStorage.setItem(offlineStore_NAME, JSON.stringify(updatedOfflineStoreForm));
+                  } catch (error) {
+                    console.error('Error submitting form:', form, error);
+                  }
+                }
+              })();
+            }
+            }, [offlineStoreForm]);
 
   const submitOnline = async (e: any) => {
     setLoading(true);
@@ -106,7 +124,7 @@ export default function page() {
 
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-      {/* <Button onClick={deleteItem}>Rest</Button> */}
+      <Button onClick={deleteAll}>Rest</Button>
       <Flex
         height={{ base: "92vh", md: "92dvh" }}
         bg={"gray.100"}
