@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function AddToMobileChrome(props: Props) {
-  const { closePrompt, visible ,handleInstalled} = props;
+  const { closePrompt, visible, handleInstalled } = props;
 
   return (
     <Modal isOpen={visible} onClose={closePrompt}>
@@ -42,12 +42,17 @@ export default function AddToMobileChrome(props: Props) {
           <Text display="flex" fontSize={12}>
             و بعد از آن علامت
             <Text fontSize={14} mx="2" fontWeight={"bold"}>
-              add to home screen
+              install app{" "}
             </Text>{" "}
             را فشار دهید.
           </Text>
-          <Flex mt="6"  justify="center" w="100%">
-            <Button size="sm" w="100%"colorScheme="green" onClick={handleInstalled}>
+          <Flex mt="6" justify="center" w="100%">
+            <Button
+              size="sm"
+              w="100%"
+              colorScheme="green"
+              onClick={handleInstalled}
+            >
               نصب کردم
             </Button>
           </Flex>
