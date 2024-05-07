@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { deleteAll } from "@/api-request";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
 import { expertsList, provinceList } from "@/util/Data";
 import { apiCreatePerson } from "@/util/api-request";
@@ -220,7 +219,7 @@ export default function page() {
               </Text>
               <FormControl isInvalid={!!errors.mobile}>
                 <Input
-                  {...register("mobile", { required: false })}
+                  {...register("mobile", { required: true })}
                   _placeholder={{ color: "gray.600" }}
                   textColor={"black"}
                   borderColor={borderColor}

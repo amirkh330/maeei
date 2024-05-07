@@ -3,6 +3,7 @@
 import { deleteAll } from "@/api-request";
 import { apiGetALL } from "@/util/api-request";
 import { expertsList, provinceList } from "@/util/Data";
+import { renderExcel } from "@/util/render-exel";
 import { DownloadIcon } from "@chakra-ui/icons";
 import {
   Table,
@@ -73,7 +74,7 @@ export default function page() {
     }
   }, [password]);
 
-  return isValid ? (
+  return !isValid ? (
     tableData.length ? (
       <CustomTable Data={tableData} />
     ) : (
@@ -111,7 +112,7 @@ const CustomTable = ({ Data }: any) => {
           اطلاعات وارد شده تا این لحظه
         </Text>
         <Flex margin={"mx-1"} gap={2}>
-          <Button
+          {/* <Button
             fontWeight="thin"
             fontSize={{ base: 8, md: 10 }}
             py={{ base: 1, md: 2 }}
@@ -120,8 +121,9 @@ const CustomTable = ({ Data }: any) => {
             onClick={deleteAll}
           >
             Rest
-          </Button>
+          </Button> */}
           <Button
+            onClick={() => renderExcel(Data)}
             rightIcon={<DownloadIcon />}
             colorScheme="green"
             fontWeight="medium"
@@ -164,53 +166,25 @@ const CustomTable = ({ Data }: any) => {
             {Data.map((row: any, index: number) => {
               return (
                 <Tr key={index}>
-                  <Td
-                    textAlign="center"
-                    fontSize={fontSizeTitle}
-                    fontFamily={"YekanBakh"}
-                  >
+                  <Td fontSize={fontSizeTitle} fontFamily={"YekanBakh"}>
                     {index + 1}
                   </Td>
-                  <Td
-                    textAlign="center"
-                    fontSize={fontSizeTitle}
-                    fontFamily={"YekanBakh"}
-                  >
+                  <Td fontSize={fontSizeTitle} fontFamily={"YekanBakh"}>
                     {row.name}
                   </Td>
-                  <Td
-                    textAlign="center"
-                    fontSize={fontSizeTitle}
-                    fontFamily={"YekanBakh"}
-                  >
+                  <Td fontSize={fontSizeTitle} fontFamily={"YekanBakh"}>
                     {row.family}
                   </Td>
-                  <Td
-                    textAlign="center"
-                    fontSize={fontSizeTitle}
-                    fontFamily={"YekanBakh"}
-                  >
+                  <Td fontSize={fontSizeTitle} fontFamily={"YekanBakh"}>
                     {row.mobile}
                   </Td>
-                  <Td
-                    textAlign="center"
-                    fontSize={fontSizeTitle}
-                    fontFamily={"YekanBakh"}
-                  >
+                  <Td fontSize={fontSizeTitle} fontFamily={"YekanBakh"}>
                     {provinceList.find((i: any) => i.id == row.province)?.title}
                   </Td>
-                  <Td
-                    textAlign="center"
-                    fontSize={fontSizeTitle}
-                    fontFamily={"YekanBakh"}
-                  >
+                  <Td fontSize={fontSizeTitle} fontFamily={"YekanBakh"}>
                     {expertsList.find((i: any) => i.id == row.expertise)?.title}
                   </Td>
-                  <Td
-                    textAlign="center"
-                    fontSize={fontSizeTitle}
-                    fontFamily={"YekanBakh"}
-                  >
+                  <Td fontSize={fontSizeTitle} fontFamily={"YekanBakh"}>
                     {row.pharmacy?.map((ph: any, index: number) => {
                       return `${index !== 0 ? "-" : ""} ${ph}`;
                     })}
