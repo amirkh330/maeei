@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
+import { deleteAll } from "@/api-request";
 import { apiGetALL } from "@/util/api-request";
 import { expertsList, provinceList } from "@/util/Data";
 import { DownloadIcon } from "@chakra-ui/icons";
@@ -72,7 +73,7 @@ export default function page() {
     }
   }, [password]);
 
-  return isValid ? (
+  return !isValid ? (
     tableData.length ? (
       <CustomTable Data={tableData} />
     ) : (
@@ -109,16 +110,29 @@ const CustomTable = ({ Data }: any) => {
         <Text fontSize={{ base: 14, md: 20 }}>
           اطلاعات وارد شده تا این لحظه
         </Text>
-        <Button
-          rightIcon={<DownloadIcon />}
-          colorScheme="green"
-          size={"sx"}
-          fontSize={{ base: 10, md: 12 }}
-          py={{ base: 1, md: 2 }}
-          px={{ base: 2, md: 4 }}
-        >
-          دانلود اطلاعات
-        </Button>
+        <Flex margin={"mx-1"} gap={2}>
+          <Button
+          fontWeight="thin"
+            fontSize={{ base: 8, md: 10 }}
+            py={{ base: 1, md: 2 }}
+            px={{ base: 2, md: 4 }}
+            size={"sx"}
+            onClick={deleteAll}
+          >
+            Rest
+          </Button>
+          <Button
+            rightIcon={<DownloadIcon />}
+            colorScheme="green"
+            fontWeight="medium"
+            size={"sx"}
+            fontSize={{ base: 10, md: 12 }}
+            py={{ base: 1, md: 2 }}
+            px={{ base: 2, md: 4 }}
+          >
+            دانلود اطلاعات
+          </Button>
+        </Flex>
       </Flex>
       <Divider />
       <TableContainer>
@@ -212,7 +226,6 @@ const CustomTable = ({ Data }: any) => {
 };
 
 const PassWordConfirm = ({ password, setPassword }: any) => {
-  
   const handlePinChange = (index: any, value: any) => {
     setPassword(
       (prevPin: any) =>

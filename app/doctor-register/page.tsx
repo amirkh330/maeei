@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { apiCreatePerson } from "@/util/api-request";
+import { deleteAll } from "@/api-request";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
 import { expertsList, provinceList } from "@/util/Data";
+import { apiCreatePerson } from "@/util/api-request";
+import { useLocaleStorage } from "@/util/useLocaleStorge";
 import {
   Box,
   Button,
@@ -16,12 +18,8 @@ import {
   useBreakpointValue,
   useToast,
 } from "@chakra-ui/react";
-import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {} from "local-storage";
-import { useLocaleStorage } from "@/util/useLocaleStorge";
-import { deleteAll } from "@/api-request";
 
 export default function page() {
   const borderColor = "gray.500";
@@ -41,12 +39,15 @@ export default function page() {
   }) as any;
 
   const { offlineStoreForm, offlineStore_NAME } = useLocaleStorage();
+  console.log("offlineStoreForm: ", offlineStoreForm)
+  console.log("offlineStore_NAME: ", offlineStore_NAME)
 
   const onSubmit = async (e: any) => {
     if (navigator.onLine) {
-      submitOnline(e);
+      await submitOnline(e);
     } else {
       setLoading(false);
+      reset();
       toast({
         title: "OFFLINE",
         description:
@@ -62,38 +63,45 @@ export default function page() {
     }
   };
 
-  // useEffect(() => {
-    //   if (offlineStoreForm?.length)
-      //     if (navigator.onLine) {
-        //       offlineStoreForm?.map((form: any) =>
-          //         submitOnline(form)
-        //           .then(() => {
-          //             offlineStoreForm.filter((d: any) => d.id == form.id);
-          //             console.log('NEW offlineStoreForm:', offlineStoreForm)
-          //             localStorage.setItem(offlineStore_NAME, JSON.stringify(offlineStoreForm));
-          //           })
-          //           .catch((e) => console.log(e))
-          //       );
-          //     }
-          // }, [offlineStoreForm]);
-          useEffect(() => {
-            if (offlineStoreForm?.length && navigator.onLine) {
-              (async () => {
-                for (const form of [...offlineStoreForm]) { // Use spread syntax for copy
-                  try {
-                    await submitOnline(form);
-                    console.log('Form submitted successfully:', form);
+
+  useEffect(() => {  
+    if (navigator.onLine && offlineStoreForm?.length > 0) {
+      const submitOfflineForm = async (formIndex: number) => {
+        const formToSubmit = offlineStoreForm[formIndex];
+        await apiCreatePerson(formToSubmit)
+          .then((data) => {            
+            offlineStoreForm.splice(formIndex, 1);
+            localStorage.setItem(
+              offlineStore_NAME,
+              JSON.stringify(offlineStoreForm)
+            );
             
-                    // Update local storage after successful submission
-                    const updatedOfflineStoreForm = offlineStoreForm.filter(f => f.id !== form.id);
-                    localStorage.setItem(offlineStore_NAME, JSON.stringify(updatedOfflineStoreForm));
-                  } catch (error) {
-                    console.error('Error submitting form:', form, error);
-                  }
-                }
-              })();
-            }
-            }, [offlineStoreForm]);
+            setLoading(false);
+            reset(),
+              toast({
+                description: "افزودن پزشک با موفیت انجام شد",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+                position,
+              });
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err);
+            toast({
+              description: "ارتباط با سرور با خطا مواجه شد",
+              status: "error",
+              duration: 2000,
+              isClosable: true,
+              position,
+            });
+          });
+      };
+
+      offlineStoreForm?.length > 0 && submitOfflineForm(0);
+    }
+  }, [offlineStoreForm]);
 
   const submitOnline = async (e: any) => {
     setLoading(true);
@@ -124,7 +132,6 @@ export default function page() {
 
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-      <Button onClick={deleteAll}>Rest</Button>
       <Flex
         height={{ base: "92vh", md: "92dvh" }}
         bg={"gray.100"}
