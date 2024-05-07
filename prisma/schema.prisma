@@ -16,8 +16,8 @@ datasource db {
 model Person {
     id        Int      @id @default(autoincrement())
     name      String
+    family    String
     mobile    String
-    serialize_number     String
     address   String
     expertise String
     province  String

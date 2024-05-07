@@ -39,8 +39,8 @@ export default function page() {
   }) as any;
 
   const { offlineStoreForm, offlineStore_NAME } = useLocaleStorage();
-  console.log("offlineStoreForm: ", offlineStoreForm)
-  console.log("offlineStore_NAME: ", offlineStore_NAME)
+  console.log("offlineStoreForm: ", offlineStoreForm);
+  console.log("offlineStore_NAME: ", offlineStore_NAME);
 
   const onSubmit = async (e: any) => {
     if (navigator.onLine) {
@@ -63,19 +63,18 @@ export default function page() {
     }
   };
 
-
-  useEffect(() => {  
+  useEffect(() => {
     if (navigator.onLine && offlineStoreForm?.length > 0) {
       const submitOfflineForm = async (formIndex: number) => {
         const formToSubmit = offlineStoreForm[formIndex];
         await apiCreatePerson(formToSubmit)
-          .then((data) => {            
+          .then((data) => {
             offlineStoreForm.splice(formIndex, 1);
             localStorage.setItem(
               offlineStore_NAME,
               JSON.stringify(offlineStoreForm)
             );
-            
+
             setLoading(false);
             reset(),
               toast({
@@ -168,7 +167,7 @@ export default function page() {
                 color={titleColor}
                 mb="2"
               >
-                نام پزشک
+                نام
               </Text>
               <FormControl isInvalid={!!errors.name}>
                 <Input
@@ -188,16 +187,17 @@ export default function page() {
                 color={titleColor}
                 mb="2"
               >
-                شماره نظام پزشکی
+                نام خانوادگی
               </Text>
-              <FormControl>
+              <FormControl isInvalid={!!errors.family}>
                 <Input
-                  {...register("serialize_number")}
+                  {...register("family", { required: true })}
                   _placeholder={{ color: "gray.600" }}
                   textColor={"black"}
                   borderColor={borderColor}
                   placeholder="وارد کنید"
                 />
+                <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
             </Box>
           </Flex>

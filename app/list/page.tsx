@@ -112,7 +112,7 @@ const CustomTable = ({ Data }: any) => {
         </Text>
         <Flex margin={"mx-1"} gap={2}>
           <Button
-          fontWeight="thin"
+            fontWeight="thin"
             fontSize={{ base: 8, md: 10 }}
             py={{ base: 1, md: 2 }}
             px={{ base: 2, md: 4 }}
@@ -141,10 +141,10 @@ const CustomTable = ({ Data }: any) => {
             <Tr>
               <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}></Th>
               <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
-                نام پزشک
+                نام
               </Th>
               <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
-                شماره نظام پزشکی
+                نام خانوادگی
               </Th>
               <Th fontSize={fontSizeHeader} fontFamily={"YekanBakh"}>
                 شماره تلفن
@@ -183,7 +183,7 @@ const CustomTable = ({ Data }: any) => {
                     fontSize={fontSizeTitle}
                     fontFamily={"YekanBakh"}
                   >
-                    {row.serialize_number}
+                    {row.family}
                   </Td>
                   <Td
                     textAlign="center"
