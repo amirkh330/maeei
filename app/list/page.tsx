@@ -73,7 +73,7 @@ export default function page() {
     }
   }, [password]);
 
-  return !isValid ? (
+  return isValid ? (
     tableData.length ? (
       <CustomTable Data={tableData} />
     ) : (
