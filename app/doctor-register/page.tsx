@@ -2,8 +2,6 @@
 "use client";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
 import { expertsList, provinceList } from "@/util/Data";
-import { apiCreatePerson } from "@/util/api-request";
-import { useLocaleStorage } from "@/util/useLocaleStorge";
 import {
   Box,
   Button,
@@ -12,123 +10,32 @@ import {
   FormErrorMessage,
   Input,
   Select,
+  Spinner,
   Text,
   Textarea,
-  useBreakpointValue,
-  useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import usePage from "./page.biz";
 
 export default function page() {
   const borderColor = "gray.500";
   const titleColor = "gray.700";
-  const [loading, setLoading] = useState(false);
   const {
-    control,
-    register,
+    loading,
+    onSubmit,
     handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-  const toast = useToast();
-  const position = useBreakpointValue({
-    base: "top", // Default for smaller screens (mobile)
-    md: "top", // Position on bottom-right for larger screens
-  }) as any;
+    errors,
+    register,
+    control,
+    editPerson,
+    id,
+  } = usePage();
 
-  const { offlineStoreForm, offlineStore_NAME } = useLocaleStorage();
-  console.log("offlineStoreForm: ", offlineStoreForm);
-  console.log("offlineStore_NAME: ", offlineStore_NAME);
-
-  const onSubmit = async (e: any) => {
-    if (navigator.onLine) {
-      await submitOnline(e);
-    } else {
-      setLoading(false);
-      reset();
-      toast({
-        title: "OFFLINE",
-        description:
-          "شما افلاین هستید، ولی فرم شما ثبت شده  در صورت انلاین شدن فرم ارسال میشود",
-        status: "loading",
-        duration: 2000,
-        isClosable: true,
-        position,
-      });
-      const DB = offlineStoreForm?.length ? offlineStoreForm : [];
-      DB.push(e);
-      localStorage.setItem(offlineStore_NAME, JSON.stringify(DB));
-    }
-  };
-
-  useEffect(() => {
-    if (navigator.onLine && offlineStoreForm?.length > 0) {
-      const submitOfflineForm = async (formIndex: number) => {
-        const formToSubmit = offlineStoreForm[formIndex];
-        await apiCreatePerson(formToSubmit)
-          .then((data) => {
-            offlineStoreForm.splice(formIndex, 1);
-            localStorage.setItem(
-              offlineStore_NAME,
-              JSON.stringify(offlineStoreForm)
-            );
-
-            setLoading(false);
-            reset(),
-              toast({
-                description: "افزودن پزشک با موفیت انجام شد",
-                status: "success",
-                duration: 2000,
-                isClosable: true,
-                position,
-              });
-          })
-          .catch((err) => {
-            setLoading(false);
-            console.log(err);
-            toast({
-              description: "ارتباط با سرور با خطا مواجه شد",
-              status: "error",
-              duration: 2000,
-              isClosable: true,
-              position,
-            });
-          });
-      };
-
-      offlineStoreForm?.length > 0 && submitOfflineForm(0);
-    }
-  }, [offlineStoreForm]);
-
-  const submitOnline = async (e: any) => {
-    setLoading(true);
-    apiCreatePerson(e)
-      .then((data) => {
-        setLoading(false);
-        reset(),
-          toast({
-            description: "افزودن پزشک با موفیت انجام شد",
-            status: "success",
-            duration: 2000,
-            isClosable: true,
-            position,
-          });
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-        toast({
-          description: "ارتباط با سرور با خطا مواجه شد",
-          status: "error",
-          duration: 2000,
-          isClosable: true,
-          position,
-        });
-      });
-  };
-
-  return (
+  const Loading = () => (
+    <Flex width="w-full" justifyContent="center" mt="10">
+      <Spinner size="lg" emptyColor="gray.200" color="blue.500" />
+    </Flex>
+  );
+  const formRender = () => (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       <Flex
         height={{ base: "92vh", md: "92dvh" }}
@@ -333,4 +240,5 @@ export default function page() {
       </Flex>
     </form>
   );
+  return id ? (!editPerson ? Loading() : formRender()) : formRender();
 }
