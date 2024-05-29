@@ -150,7 +150,7 @@ const DesktopNav = () => {
           </Popover>
         </Box>
       ))}
-      {offlineStoreForm.length && (
+      {!!offlineStoreForm?.length && (
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
               <Box

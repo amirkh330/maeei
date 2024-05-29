@@ -51,7 +51,7 @@ export default function usePage() {
       });
       const DB = offlineStoreForm?.length ? offlineStoreForm : [];
       DB.push(e);
-      localStorage.setItem(offlineStore_NAME, JSON.stringify(DB));
+      if (typeof window !== 'undefined') localStorage?.setItem(offlineStore_NAME, JSON.stringify(DB));
     }
   };
 
@@ -62,7 +62,7 @@ export default function usePage() {
         await apiCreatePerson(formToSubmit)
           .then((data) => {
             offlineStoreForm.splice(formIndex, 1);
-            localStorage.setItem(
+            if (typeof window !== 'undefined') localStorage?.setItem(
               offlineStore_NAME,
               JSON.stringify(offlineStoreForm)
             );

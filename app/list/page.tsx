@@ -61,10 +61,10 @@ export default function page() {
         });
       }
     }
-  }, [password]);
+  }, [password, toast]);
 
   return !isValid ? (
-    tableData.length ? (
+    !!tableData?.length ? (
       <CustomTable Data={tableData} />
     ) : (
       <Flex
