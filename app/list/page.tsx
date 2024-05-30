@@ -80,6 +80,7 @@ export default function page() {
   );
 }
 
+
 const PassWordConfirm = ({ password, setPassword }: any) => {
   const handlePinChange = (index: any, value: any) => {
     setPassword(
