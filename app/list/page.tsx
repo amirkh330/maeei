@@ -22,14 +22,16 @@ import { useCallback, useEffect, useState } from "react";
 export default function page() {
   const [tableData, setTableData] = useState([]);
   const toast = useToast();
-
+  const [Loading, setLoading] = useState(true);
   const getData = () => {
+    setLoading(true);
     return apiGetALL()
       .then((data) => setTableData(data))
       .catch((error) => {
         console.error("Error fetching data:", error);
         // Handle errors appropriately, e.g., display error message to user
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -63,23 +65,28 @@ export default function page() {
     }
   }, [password, toast]);
 
+
+
+  
   return !isValid ? (
     !!tableData?.length ? (
       <CustomTable Data={tableData} />
     ) : (
+      
       <Flex
         w={"100%"}
         justifyContent={"center"}
         mt={{ base: "200px", md: "220px" }}
-      >
+      >{Loading ? 
         <Spinner size="lg" emptyColor="gray.200" color="blue.500" />
+        :
+        <Text>داده ای وارد نشده!!</Text>}
       </Flex>
     )
   ) : (
     <PassWordConfirm password={password} setPassword={setPassword} />
   );
 }
-
 
 const PassWordConfirm = ({ password, setPassword }: any) => {
   const handlePinChange = (index: any, value: any) => {

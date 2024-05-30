@@ -110,7 +110,7 @@ const CustomTable = ({ Data }: any) => {
           اطلاعات وارد شده تا این لحظه
         </Text>
         <Flex margin={"mx-1"} gap={2}>
-          {/* <Button
+          <Button
               fontWeight="thin"
               fontSize={{ base: 8, md: 10 }}
               py={{ base: 1, md: 2 }}
@@ -119,7 +119,7 @@ const CustomTable = ({ Data }: any) => {
               onClick={deleteAll}
             >
               Rest
-            </Button> */}
+            </Button>
           <Button
             onClick={() => renderExcel(Data)}
             rightIcon={<DownloadIcon />}
