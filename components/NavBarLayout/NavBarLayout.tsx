@@ -70,7 +70,7 @@ export default function NavBarLayout({ children, data }: any) {
             <DesktopNav />
           </Flex>
           <Flex position="relative" display={{ base: "flex", md: "none" }}>
-            {offlineStoreForm ? (
+            {/* {offlineStoreForm ? (
               <>
                 <BellIcon fontSize="22" color="white" />
                 <Badge
@@ -90,7 +90,7 @@ export default function NavBarLayout({ children, data }: any) {
                   {offlineStoreForm.length}
                 </Badge>
               </>
-            ) : null}
+            ) : null} */}
           </Flex>
         </Flex>
 

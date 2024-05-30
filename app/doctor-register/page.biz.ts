@@ -23,6 +23,8 @@ export default function usePage() {
     register,
     handleSubmit,
     reset,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm({ values: editPerson, });
 
@@ -155,5 +157,7 @@ export default function usePage() {
     control,
     id,
     editPerson,
+    getValues,
+    setValue
   };
 }

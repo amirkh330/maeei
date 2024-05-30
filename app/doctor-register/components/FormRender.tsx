@@ -1,21 +1,26 @@
+"use client";
 import TagGenerator from "@/components/TagGenerator/TagGenerator";
-import { expertsList, provinceList } from "@/util/Data";
+import { doctorsList, expertsList, provinceList } from "@/util/Data";
 import {
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    FormErrorMessage,
-    Input,
-    Select,
-    Spinner,
-    Text,
-    Textarea
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  Input,
+  Select,
+  Spinner,
+  Text,
+  Textarea,
+  theme,
 } from "@chakra-ui/react";
 import usePage from "../page.biz";
+import CreatableSelect from "react-select/creatable";
+import { useController } from "react-hook-form";
+import { useEffect } from "react";
 
 export const FormRender = () => {
-    const borderColor = "gray.500";
+  const borderColor = "gray.500";
   const titleColor = "gray.700";
   const {
     loading,
@@ -26,13 +31,56 @@ export const FormRender = () => {
     control,
     editPerson,
     id,
+    getValues,
+    setValue,
   } = usePage();
+  // const { field, fieldState, formState } = useController({control, "family"});
+  const {
+    field: { value, onChange },
+    fieldState,
+    formState,
+  } = useController({
+    name: "family", // Use "name" instead of the string "family"
+    control,
+  });
+  
+  const familyValue = getValues("family"); // "test-input"
+  
+  
 
   const Loading = () => (
     <Flex width="w-full" justifyContent="center" mt="10">
       <Spinner size="lg" emptyColor="gray.200" color="blue.500" />
     </Flex>
   );
+
+  const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      backgroundColor: theme.colors.gray[100], // Use Chakra UI theme colors (optional)
+      // border: "1px solid",
+      borderColor: theme.colors.gray[500], // Use Chakra UI theme colors (optional)
+      borderRadius: "6px",
+      fontSize: "12px",
+      height: "32px",
+      minHeight: "32px",
+      // padding: "10px",
+      ":hover": {
+        borderColor: theme.colors.gray[400], // Use Chakra UI theme colors (optional)
+      },
+    }),
+    valueContainer: (provided: any) => ({
+      ...provided,
+      padding: "0 8px",
+      bottom: "3px",
+    }),
+    Input: (provided: any) => ({
+      color: theme.colors.gray[100],
+      background: "red",
+    }),
+    // Override other styles like dropdownIndicator, menu, etc.
+  };
+
   const formRender = () => (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       <Flex
@@ -94,12 +142,20 @@ export const FormRender = () => {
                 نام خانوادگی
               </Text>
               <FormControl isInvalid={!!errors.family}>
-                <Input
-                  {...register("family", { required: true })}
-                  _placeholder={{ color: "gray.600" }}
-                  textColor={"black"}
-                  borderColor={borderColor}
+                <CreatableSelect
+                  onChange={({ value }: any) => {
+                    return  setValue("family", value);
+                    // return register("family", {
+                    //   onChange: () => value
+                    // });
+                  }}
+                  value={{ label: familyValue, value: familyValue }}
                   placeholder="وارد کنید"
+                  styles={customStyles}
+                  options={doctorsList.map((i: any) => ({
+                    ...i,
+                    value: i.label,
+                  }))}
                 />
                 <FormErrorMessage>این فیلد اجباری است</FormErrorMessage>
               </FormControl>
@@ -238,7 +294,9 @@ export const FormRender = () => {
       </Flex>
     </form>
   );
-  return id ? (!editPerson ? Loading() : formRender()) : formRender()
-   
-  
+
+  return id ? (!editPerson ? Loading() : formRender()) : formRender();
+};
+function getValues(arg0: string) {
+  throw new Error("Function not implemented.");
 }
