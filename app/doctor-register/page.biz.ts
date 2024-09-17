@@ -35,9 +35,10 @@ export default function usePage() {
   }) as any;
 
   const { offlineStoreForm, offlineStore_NAME } = useLocaleStorage();
+  const [isSubmittingOffline, setIsSubmittingOffline] = useState(false);
 
   const onSubmit = async (e: any) => {
-    if (navigator.onLine) {
+    if (navigator.onLine && !isSubmittingOffline) {
       await submitOnline(e);
     } else {
       setLoading(false);
@@ -58,43 +59,84 @@ export default function usePage() {
   };
 
   useEffect(() => {
-    if (navigator.onLine && offlineStoreForm?.length > 0) {
-      const submitOfflineForm = async (formIndex: number) => {
-        const formToSubmit = offlineStoreForm[formIndex];
-        await apiCreatePerson(formToSubmit)
-          .then((data) => {
-            offlineStoreForm.splice(formIndex, 1);
-            if (typeof window !== 'undefined') localStorage?.setItem(
-              offlineStore_NAME,
-              JSON.stringify(offlineStoreForm)
-            );
-
-            setLoading(false);
-            reset(),
-              toast({
-                description: "افزودن پزشک با موفیت انجام شد",
-                status: "success",
-                duration: 2000,
-                isClosable: true,
-                position,
-              });
-          })
-          .catch((err) => {
-            setLoading(false);
-            console.log(err);
-            toast({
-              description: "ارتباط با سرور با خطا مواجه شد",
-              status: "error",
-              duration: 2000,
-              isClosable: true,
-              position,
-            });
+    const submitOfflineForm = async (formIndex: number) => {
+      setIsSubmittingOffline(true);
+      const formToSubmit = offlineStoreForm[formIndex];
+      await apiCreatePerson(formToSubmit)
+        .then((data) => {
+          offlineStoreForm.splice(formIndex, 1);
+          if (typeof window !== 'undefined') localStorage?.setItem(
+            offlineStore_NAME,
+            JSON.stringify(offlineStoreForm)
+          );
+  
+          setLoading(false);
+          reset();
+          toast({
+            description: "افزودن پزشک با موفیت انجام شد",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+            position,
           });
-      };
-
-      offlineStoreForm?.length > 0 && submitOfflineForm(0);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+          toast({
+            description: "ارتباط با سرور با خطا مواجه شد",
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+            position,
+          });
+        })
+        .finally(() => setIsSubmittingOffline(false));
+    };
+  
+    if (navigator.onLine && offlineStoreForm?.length > 0 && !isSubmittingOffline) {
+      submitOfflineForm(0);
     }
-  }, [offlineStoreForm]);
+  }, [offlineStoreForm, isSubmittingOffline]);
+
+  // useEffect(() => {
+  //   if (navigator.onLine && offlineStoreForm?.length > 0) {
+  //     const submitOfflineForm = async (formIndex: number) => {
+  //       const formToSubmit = offlineStoreForm[formIndex];
+  //       await apiCreatePerson(formToSubmit)
+  //         .then((data) => {
+  //           offlineStoreForm.splice(formIndex, 1);
+  //           if (typeof window !== 'undefined') localStorage?.setItem(
+  //             offlineStore_NAME,
+  //             JSON.stringify(offlineStoreForm)
+  //           );
+
+  //           setLoading(false);
+  //           reset(),
+  //             toast({
+  //               description: "افزودن پزشک با موفیت انجام شد",
+  //               status: "success",
+  //               duration: 2000,
+  //               isClosable: true,
+  //               position,
+  //             });
+  //         })
+  //         .catch((err) => {
+  //           setLoading(false);
+  //           console.log(err);
+  //           toast({
+  //             description: "ارتباط با سرور با خطا مواجه شد",
+  //             status: "error",
+  //             duration: 2000,
+  //             isClosable: true,
+  //             position,
+  //           });
+  //         });
+  //     };
+
+  //     offlineStoreForm?.length > 0 && submitOfflineForm(0);
+  //   }
+  // }, [offlineStoreForm]);
 
   const submitOnline = async (e: any) => {
     setLoading(true);
