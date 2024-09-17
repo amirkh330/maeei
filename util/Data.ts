@@ -50,6 +50,8 @@ export const expertsList = [
     { id: 15, title: "ژنتیک" },
     { id: 16, title: "اروانکولوژی" },
     { id: 17, title: "اورولوژی" },
+    { id: 18, title: "عمومی" },
+    { id: 19, title: "زنان و زایمان" },
   ];
 
   export const doctorsList=[
