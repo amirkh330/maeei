@@ -48,6 +48,8 @@ export const expertsList = [
     { id: 13, title: "غدد اطفال" },
     { id: 14, title: "غدد درون ریز" },
     { id: 15, title: "ژنتیک" },
+    { id: 16, title: "اروانکولوژی" },
+    { id: 17, title: "اورولوژی" },
   ];
 
   export const doctorsList=[
