@@ -111,7 +111,7 @@ const DesktopNav = () => {
 
   return (
     <Stack alignItems="center" direction={"row"} spacing={4}>
-      {NAV_ITEMS.map((navItem) => (
+      {/* {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
@@ -184,7 +184,7 @@ const DesktopNav = () => {
               </Box>
             </PopoverTrigger>
           </Popover>
-      )}
+      )} */}
     </Stack>
   );
 };
@@ -234,9 +234,9 @@ const MobileNav = () => {
       p={4}
       display={{ md: "none" }}
     >
-      {NAV_ITEMS.map((navItem) => (
+      {/* {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
-      ))}
+      ))} */}
     </Stack>
   );
 };
